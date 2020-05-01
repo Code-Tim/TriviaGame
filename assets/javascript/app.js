@@ -5,6 +5,24 @@ const quizContainer = document.getElementById('quiz');
 const resultsContainer = document.getElementById('results');
 const submitButton = document.getElementById('submit');
 
+// Add timer here
+var count = 60;
+
+var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
+
+function timer() {
+    count = count - 1;
+    if (count <= 0) {
+        clearInterval(counter);
+        //counter ended, do something here
+        return;
+    }
+
+    document.getElementById("timer").innerHTML = count + " secs"; // watch for spelling
+
+}
+
+
 function buildQuiz() { }
 // variable to store the HTML output
 const output = [];
