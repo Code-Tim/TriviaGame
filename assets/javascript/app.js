@@ -5,7 +5,7 @@ const quizContainer = document.getElementById('quiz');
 const resultsContainer = document.getElementById('results');
 const submitButton = document.getElementById('submit');
 
-// Add timer here
+// timer 
 var count = 60;
 
 var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
@@ -14,16 +14,16 @@ function timer() {
     count = count - 1;
     if (count <= 0) {
         clearInterval(counter);
-        //counter ended, do something here
+        //counter ended, Go to next question
         return;
     }
 
-    document.getElementById("timer").innerHTML = count + " secs"; // watch for spelling
+    document.getElementById("timer").innerHTML = count + " secs";
 
 }
 
 
-function buildQuiz() { }
+//function buildQuiz() { }
 // variable to store the HTML output
 const output = [];
 const myQuestions = [
@@ -109,38 +109,75 @@ const myQuestions = [
     }
 ];
 let currentQuestion = 0
-// for each question...
-myQuestions.forEach((currentQuestion, questionNumber) => {
-    // the code we want to run for each question goes here
-
-    // variable to store the list of possible answers
+showQuestion()
+function showQuestion() {
     const answers = [];
 
     // and for each available answer...
-    for (letter in currentQuestion.answers) {
+    for (letter in myQuestions[currentQuestion].answers) {
 
         // ...add an HTML radio button
         answers.push(
             `<label>
-            <input type="radio" name="question${questionNumber}" value="${letter}">
+            <button type="button" class='answer'>
             ${letter} :
-            ${currentQuestion.answers[letter]}
+            ${myQuestions[currentQuestion].answers[letter]}</button>
           </label>`
         );
     }
+    quizContainer.innerHTML =
+        `<div class="question"> ${myQuestions[currentQuestion].question} </div>
+    <div class="answers"> ${answers.join('')} </div>`
 
-    // add this question and its answers to the output
-    output.push(
-        // output.push(
-        `<div class="question"> ${currentQuestion.question} </div>
-        <div class="answers"> ${answers.join('')} </div>`
-    );
 }
-);
-//$('#quiz').html(output.join(""))
+$('.answer').on("click", function (event) {//static event listener
+    console.log("clicked here statically")
+})
+$(document).on("click", ".answer", function (event) {//dynamic event handler
+    console.log("clicked here dynamically")
+    console.log($(this))
+    console.log(this)
+    //get the thing that got clicked on's text
+    //grade the answer
+    if (currentQuestion < myQuestions.length - 1) {
+        currentQuestion++
+        showQuestion()
+    } else {
+        //show results
+    }
+})
+// for each question...
+// myQuestions.forEach((currentQuestion, questionNumber) => {
+//     // the code we want to run for each question goes here
 
-// finally combine our output list into one string of HTML and put it on the page
-quizContainer.innerHTML = output.join('');
+//     // variable to store the list of possible answers
+//     const answers = [];
+
+//     // and for each available answer...
+//     for (letter in currentQuestion.answers) {
+
+//         // ...add an HTML radio button
+//         answers.push(
+//             `<label>
+//             <input type="radio" name="question${questionNumber}" value="${letter}">
+//             ${letter} :
+//             ${currentQuestion.answers[letter]}
+//           </label>`
+//         );
+//     }
+
+//     // add this question and its answers to the output
+//     output.push(
+//         // output.push(
+//         `<div class="question"> ${currentQuestion.question} </div>
+//         <div class="answers"> ${answers.join('')} </div>`
+//     );
+// }
+// );
+// //$('#quiz').html(output.join(""))
+
+// // finally combine our output list into one string of HTML and put it on the page
+// //
 
 function showResults() {
     for (let i = 0; i < myQuestions.length; i++) {
@@ -156,7 +193,7 @@ function showResults() {
 }
 
 // display quiz right away
-buildQuiz();
+// buildQuiz();
 
 // on submit, show results
 submitButton.addEventListener('click', showResults);
