@@ -5,25 +5,35 @@ const quizContainer = document.getElementById('quiz');
 const resultsContainer = document.getElementById('results');
 const submitButton = document.getElementById('submit');
 
-// timer 
-var count = 60;
+//start game and hide button
+$(document).ready(function () {
+    $('#startGame').on("click", function () {
+        console.log('Turtle Time')
+        // timer()
+        $("#container").hide();
+        // timer starts when start button is clicked
+        var count = 60;
 
-var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
+        var counter = setInterval(function timer() {
+            count = count - 1;
+            if (count <= 0) {
+                clearInterval(counter);
+                //counter ended, do something here
+                return;
+            }
 
-function timer() {
-    count = count - 1;
-    if (count <= 0) {
-        clearInterval(counter);
-        //counter ended, Go to next question
-        return;
-    }
+            $("#timer").html(count + " sec"); // watch for spelling
 
-    document.getElementById("timer").innerHTML = count + " secs";
-
-}
+        }, 1000); //1000 will  run it every 1 second
 
 
-//function buildQuiz() { }
+    })
+})
+
+var toadallyBogus = 0
+var cowabungaDude = 0
+
+function buildQuiz() { }
 // variable to store the HTML output
 const output = [];
 const myQuestions = [
@@ -109,75 +119,51 @@ const myQuestions = [
     }
 ];
 let currentQuestion = 0
-showQuestion()
-function showQuestion() {
+// for each question...
+myQuestions.forEach((currentQuestion, questionNumber) => {
+    // the code we want to run for each question goes here
+
+    // variable to store the list of possible answers
     const answers = [];
 
     // and for each available answer...
-    for (letter in myQuestions[currentQuestion].answers) {
+    for (letter in currentQuestion.answers) {
 
         // ...add an HTML radio button
         answers.push(
             `<label>
-            <button type="button" class='answer'>
+            <input type="radio" name="question${questionNumber}" value="${letter}">
             ${letter} :
-            ${myQuestions[currentQuestion].answers[letter]}</button>
+            ${currentQuestion.answers[letter]}
           </label>`
         );
     }
-    quizContainer.innerHTML =
-        `<div class="question"> ${myQuestions[currentQuestion].question} </div>
-    <div class="answers"> ${answers.join('')} </div>`
 
+    // add this question and its answers to the output
+    output.push(
+        // output.push(
+        `<div class="question"> ${currentQuestion.question} </div>
+        <div class="answers"> ${answers.join('')} </div>`
+    );
 }
-$('.answer').on("click", function (event) {//static event listener
-    console.log("clicked here statically")
-})
-$(document).on("click", ".answer", function (event) {//dynamic event handler
-    console.log("clicked here dynamically")
-    console.log($(this))
-    console.log(this)
-    //get the thing that got clicked on's text
-    //grade the answer
-    if (currentQuestion < myQuestions.length - 1) {
-        currentQuestion++
-        showQuestion()
-    } else {
-        //show results
-    }
-})
-// for each question...
-// myQuestions.forEach((currentQuestion, questionNumber) => {
-//     // the code we want to run for each question goes here
+);
 
-//     // variable to store the list of possible answers
-//     const answers = [];
+// $('#container').prepend(
+//     '<h4>Time Remaining:</h4><span id= "timer">60</span>'
+// )
 
-//     // and for each available answer...
-//     for (letter in currentQuestion.answers) {
+// $('#questions').prepend(
+//     '<h4> Questions: </h4><span> </span>'
+// )
 
-//         // ...add an HTML radio button
-//         answers.push(
-//             `<label>
-//             <input type="radio" name="question${questionNumber}" value="${letter}">
-//             ${letter} :
-//             ${currentQuestion.answers[letter]}
-//           </label>`
-//         );
-//     }
+// $('#start').remove{ }
 
-//     // add this question and its answers to the output
-//     output.push(
-//         // output.push(
-//         `<div class="question"> ${currentQuestion.question} </div>
-//         <div class="answers"> ${answers.join('')} </div>`
-//     );
-// }
-// );
-// //$('#quiz').html(output.join(""))
+// $('#previous').click(function ())
 
-// // finally combine our output list into one string of HTML and put it on the page
-// //
+//$('#quiz').html(output.join(""))
+
+// finally combine our output list into one string of HTML and put it on the page
+quizContainer.innerHTML = output.join('');
 
 function showResults() {
     for (let i = 0; i < myQuestions.length; i++) {
@@ -185,18 +171,33 @@ function showResults() {
         const rightAnswer = myQuestions[i].correctAnswer
         const userAnswerValue = (myQuestions[i].answers[userAnswerKey])
         if (userAnswerValue == rightAnswer) {
-            console.log("cowabunga")
+            console.log("Cowabunga Dude") // change to show results
+            cowabungaDude++
+            console.log(cowabungaDude)
+            // $('#results').append(cowabungaDude)
         } else {
-            console.log('Toadally Bogus')
+            console.log('Toadally Bogus') // change to show results
+            toadallyBogus++
+            console.log(toadallyBogus)
+            // $('#results').append(toadallyBogus)
         }
     }
-}
 
+    var results = $('#results');
+    $(results).append("<p>Cowabunga Dude!!!</p>");
+    $(results).append("<p>Correct Answers: " + cowabungaDude + "</p>");
+    $(results).append("<p>Incorrect Answers: " + toadallyBogus + "</p>");
+    clearInterval(intervalID);
+
+}
 // display quiz right away
-// buildQuiz();
+buildQuiz();
 
 // on submit, show results
 submitButton.addEventListener('click', showResults);
+
+
+
 
 
 

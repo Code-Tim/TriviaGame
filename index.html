@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Toadally Awesome Trivia Game!</title>
     <!-- Added link for the reset-->
-    <!-- <link rel="stylesheet" href='./assets/css/reset.css'> -->
+    <link rel="stylesheet" href='./assets/css/reset.css'>
     <!-- Added link for the style-->
     <link rel="stylesheet" href='./assets/css/style.css'>
     <!-- Added link to the jQuery -->
@@ -15,17 +15,28 @@
 </head>
 
 <body>
+    <!-- <div id="wrapper"> -->
+    <div class='jumbotron text-center' id='container'>
+        <h1 class='display-4'>My Toadally Awesome Trivia Game!</h1>
+
+        <button type='button' id="startGame" class='btn'>
+            Turtle Time
+        </button>
+    </div>
+
+    <!-- <div id="subwrapper"> -->
+    <header>My Toadally Awesome Trivia Game!</header>
 
     <div class='name'>
-        <h5>My Toadally Awesome Trivia Game!</h5>
-        <!-- <p>Time Remaining:
-            <bold><span id="timer"></span></bold>
-        </p> -->
+        <h4> Time Remaining: <div id="timer"></div>
+        </h4>
 
         <div id="quiz"></div>
         <button id="submit">Get Results</button>
         <div id="results"></div>
     </div>
+    <!-- </div> -->
+    <!-- </div> -->
 
 
 </body>
